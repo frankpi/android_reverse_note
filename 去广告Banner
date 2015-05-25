@@ -1,0 +1,96 @@
+
+
+针对manifest.xml 中有google--gms，去除联网权限并去除字符串后仍出现黑框提示权限丢失。
+
+\smali\com\google\android\gms\ads\AdView.smali解包文件夹下的smali
+
+.method protected onMeasure(II)V
+    .locals 5
+    .parameter "widthMeasureSpec"
+    .parameter "heightMeasureSpec"
+
+    .prologue
+    const/4 v0, 0x0
+
+    invoke-virtual {p0, v0}, Lcom/google/android/gms/ads/AdView;->getChildAt(I)Landroid/view/View;
+
+    move-result-object v2
+
+    invoke-virtual {p0}, Lcom/google/android/gms/ads/AdView;->getAdSize()Lcom/google/android/gms/ads/AdSize;
+
+    move-result-object v3
+
+    if-eqz v2, :cond_0
+
+    invoke-virtual {v2}, Landroid/view/View;->getVisibility()I
+
+    move-result v1
+
+    const/16 v4, 0x8
+
+    if-eq v1, v4, :cond_0
+
+    invoke-virtual {p0, v2, p1, p2}, Lcom/google/android/gms/ads/AdView;->measureChild(Landroid/view/View;II)V
+
+    invoke-virtual {v2}, Landroid/view/View;->getMeasuredWidth()I
+
+    move-result v1
+const/4 v1, 0x0
+    invoke-virtual {v2}, Landroid/view/View;->getMeasuredHeight()I
+
+    move-result v0
+const/4 v0, 0x0
+    :goto_0
+    invoke-virtual {p0}, Lcom/google/android/gms/ads/AdView;->getSuggestedMinimumWidth()I
+
+    move-result v2
+    
+    invoke-static {v1, v2}, Ljava/lang/Math;->max(II)I
+
+    move-result v1
+const/4 v1, 0x0
+    invoke-virtual {p0}, Lcom/google/android/gms/ads/AdView;->getSuggestedMinimumHeight()I
+
+    move-result v2
+
+    invoke-static {v0, v2}, Ljava/lang/Math;->max(II)I
+
+    move-result v0
+ const/4 v0, 0x0
+    invoke-static {v1, p1}, Landroid/view/View;->resolveSize(II)I
+
+    move-result v1
+
+    invoke-static {v0, p2}, Landroid/view/View;->resolveSize(II)I
+
+    move-result v0
+
+    invoke-virtual {p0, v1, v0}, Lcom/google/android/gms/ads/AdView;->setMeasuredDimension(II)V
+
+    return-void
+
+    :cond_0
+    if-eqz v3, :cond_1
+
+    invoke-virtual {p0}, Lcom/google/android/gms/ads/AdView;->getContext()Landroid/content/Context;
+
+    move-result-object v0
+
+    invoke-virtual {v3, v0}, Lcom/google/android/gms/ads/AdSize;->getWidthInPixels(Landroid/content/Context;)I
+
+    move-result v1
+
+    invoke-virtual {v3, v0}, Lcom/google/android/gms/ads/AdSize;->getHeightInPixels(Landroid/content/Context;)I
+
+    move-result v0
+
+    goto :goto_0
+
+    :cond_1
+    move v1, v0
+
+    goto :goto_0
+.end method
+
+
+四处标红处将长宽全部定义为0  就不会再显示出来了
