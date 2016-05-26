@@ -1,0 +1,103 @@
+so 有一个loadrom 函数的有exit(1)对游戏包名进行了校验,所以要修改
+
+so 修改部分,
+symbol:loadrom
+地址位置:110770  dcb制度常量  
+
+/data/data/cn.ccgba100
+
+比对修改
+
+activity 都做里name 的//修改
+
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="cn.ccgba100" platformBuildVersionCode="21" platformBuildVersionName="APKTOOL">//修改
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+    <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+    <uses-feature android:name="android.hardware.nfc" android:required="false"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <application android:allowBackup="true" android:icon="@drawable/app_icon" android:label="口袋妖怪-漆黑的魅影修改版">//修改
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="com.fastemulator.gba.MainActivity">//
+            <intent-filter>
+                <action android:name="cn.ccgba100.action.MainLaunch"/>//写死了  不用修改
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.jobernowl.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="com.fastemulator.gba.MainActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity-alias android:label="@string/launcher_shortcut_name" android:name="com.fastemulator.gba.CreateShortcuts" android:targetActivity="com.fastemulator.gba.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <activity android:configChanges="keyboardHidden|orientation" android:name="com.fastemulator.gba.FileBrowserActivity"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="singleTask" android:name="com.fastemulator.gba.EmulatorActivity" android:process=":emulator">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="application/x-gba-rom"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="gbalink"/>
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:label="@string/cheats" android:name="com.fastemulator.gba.CheatsActivity" android:process=":emulator"/>
+        <activity android:name="com.fastemulator.gba.EditCheatActivity"/>
+        <activity android:name="com.fastemulator.gba.SaveSlotsActivity" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:configChanges="keyboardHidden|orientation" android:label="@string/select_device" android:name="com.fastemulator.gba.BluetoothDeviceListActivity" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:label="@string/settings" android:name="com.fastemulator.gba.settings.EmulatorSettings" android:process=":emulator"/>
+        <activity android:name="com.fastemulator.gba.settings.KeyMappingSettings" android:process=":emulator"/>
+        <activity android:label="@string/key_mappings" android:name="com.fastemulator.gba.settings.KeyProfilesActivity" android:process=":emulator"/>
+        <activity android:name="com.fastemulator.gba.settings.LayoutEditor" android:process=":emulator" android:screenOrientation="sensor"/>
+        <activity android:label="@string/screen_layouts" android:name="com.fastemulator.gba.settings.LayoutsActivity" android:process=":emulator"/>
+        <service android:name="com.fastemulator.gba.EmulatorService" android:process=":emulator"/>
+        <meta-data android:name="xperiaplayoptimized_content" android:resource="@string/xperiaplayoptimized_content"/>
+        <meta-data android:name="game_icon" android:resource="@drawable/xperia_icon"/>
+    </application>
+</manifest>
+
+
+这个类:\smali\com\fastemulator\gba\MainActivity.smali
+
+    new-instance v1, Ljava/io/File;
+    
+    const-string v0, "/storage/emulated/0/NiucooGBA/cn.ncgba108/game.gba"
+
+    invoke-direct {v1, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    
+    
+    
+    invoke-virtual {p0, v1}, Lcom/fastemulator/gba/MainActivity;->c(Ljava/io/File;)V
+    invoke-virtual {p0}, Lcom/fastemulator/gba/MainActivity;->finish()V
+
+
+这个类:S:\sh\plugins\GBA\gba_16008_20150418\smali\com\fastemulator\gba\Link.smali
+
+这个类:S:\sh\plugins\GBA\gba_16008_20150418\smali\com\fastemulator\gba\EmulatorActivity.smali
+
+修改apk的有些部分是拷贝纽扣的代码
+
+res 的修改,图片的修改,rom 的copy
+res xml中修改包名
+res icon 修改
