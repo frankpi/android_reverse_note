@@ -1,0 +1,33 @@
+psp  模拟器的研究和修改
+
+ppsspp 模拟器
+
+研究ppsspp 模拟器,不进入ppsspp 模拟器界面,直接启动ios 游戏
+
+
+修改ppsspp 模拟器过程:
+	修改完smali 之后
+	\smali\com\game\nc\PreActivity.smali 
+	onCreate 方法
+	onPause
+	onResume
+	删除 push 相关的代码
+	Lcom/game/nc/MyApplication
+	onCreate 方法
+	删除 openpush()方法
+
+
+
+在做psp 游戏从这里做就行.
+
+再修改包名
+
+修改图标
+
+
+
+
+制作存档插件:
+每个psp 游戏有对应的存档,去网上搜寻一下,下载下来;
+/storage/emulated/0/PSP/SAVEDATA/
+插件的例子已经上传git
