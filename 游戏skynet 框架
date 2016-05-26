@@ -1,0 +1,29 @@
+skynet 框架
+
+国内游戏:机战王,地铁跑酷,神庙逃亡2，国宝三国，水果忍着
+
+字符串：
+product_already_owned
+
+
+    iget-boolean v2, v1, Lcom/idsky/android/frame/bean/Item;->isOwned:Z
+
+    #if-eqz v2, :cond_d6
+
+    .line 796
+    new-instance v0, Lcom/idsky/lib/plugin/PluginResult;
+
+    sget-object v1, Lcom/idsky/lib/plugin/PluginResult$Status;->OK:Lcom/idsky/lib/plugin/PluginResult$Status;
+
+    const-string v2, "product_already_owned"
+
+
+盗版验证
+字符串：
+dialog_initconfig_msg
+方法返回值改为空,
+
+注意这个类
+Lcom/skynet/android/impl/ab 
+引用了 aa类的方法
+
