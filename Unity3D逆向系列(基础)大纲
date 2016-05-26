@@ -1,0 +1,207 @@
+
+Unity3D逆向系列(基础)大纲----By:Sarkozy
+
+
+基础介绍篇
+1.unity逆向环境搭建
+  1..Net framework 4.0/3.5/3.0/2.5      360软件管家中下载
+  2.reflector v8.2.0.42【破解注册】    http://pan.baidu.com/s/1pJx9HSR
+  3.apkdb1.9.0apk反编译工具(需要JAVA环境)http://pan.baidu.com/s/1eQoZtmE
+安装破解需要断网
+
+2.unity文件介绍
+  1.所有文件都在/bin/data里面
+  2.settings.xml                 unity配置文件
+  3.splash.png                   apk默认启动图
+  4.sharedassets0.assets         unity资源文件打包文件
+  5.sharedassets0.assets.split   unity资源文件打包文件
+  6.managed文件夹                unity游戏源代码
+  7.unity default resources      unity语言包
+
+
+3.reflector工具使用
+
+  1.Analyze关联定位工具  ctrl+R
+    1.depends on 数据来源
+    2.used by    数据应用
+  2.Search查找工具       F3
+    1.Search Type                 查找类名
+    2.Search Member               查找方法名
+    3.Search string or constant   查找字符串或者数值
+    4.exact match                 精确匹配
+  3.Language反编译代码显示方式
+    C#、vb等多种方式
+  4.refresh              F5
+    修改小技巧
+  5.reflexil代码修改工具
+    1.offset行数
+    2.opcode代码类型、定义类型
+    3.operand代码数值、调用类型
+
+常用关键字篇
+中文>>>>>>>>>>>>英文
+金币            gold、coin、cash、money
+钻石、宝石      Gem、diamond
+生命            health、life、HP、Max hp
+冷却时间    cooldown
+蓝              mp、sp、Power
+攻击            attack(atk)、fight、hit、damage
+防御            defence(def)
+护甲            Armor
+物理            physic(phy)
+魔法            magic(mag)
+暴击            Crit(cri)(crt)
+闪避            Dodge
+范围            range
+速度、频率      speed
+改路            Rate
+恢复            Recover
+取              get
+置              set
+支付            bill、billing、pay、purchase
+成功            success
+失败            fail
+取消            cancel
+分数            Score
+死亡            Dead
+英雄、玩家      Hero、player
+怪物、敌人      monster、Enemies（enemy）
+初始化          init
+力量            power、str、strength
+智力            int、Intelligence
+运气            luk、luck
+敏捷            AGI、agile
+体质            vital、vit、stamina
+
+
+常用IL指令篇
+加减乘除
+Add:将两个值相加并将结果赋值到新的变量。
+Add.Ovf：将两个整数相加，执行溢出检查，并且将结果赋值到新的变量。
+Add.Ovf.Un：将两个无符号整数值相加，执行溢出检查，并且将结果赋值到新的变量。
+Div：将两个值相除并将结果作为float或者int32赋值到新的变量。
+Div.Un：两个无符号整数值相除并将结果 ( int32 ) 赋值到新的变量。
+Mul：将两个值相乘并赋值到新的变量。
+Mul.Ovf：将两个整数值相乘，执行溢出检查，并赋值到新的变量。
+Mul.Ovf.Un：将两个无符号整数值相乘，执行溢出检查，并赋值到新的变量。
+
+Neg：对一个值取他的相反数。
+Add：将两个值相加并将结果赋值到新的变量。
+Mul：将两个值相乘并赋值到新的变量。
+Sub:将两个值相减并将结果赋值到新的变量。
+Div：将两个值相除并将结果作为float或者int32赋值到新的变量。
+
+
+
+并列
+And:计算两个值的按位“与”并将结果赋值到新的变量。值为1或者0.
+
+
+判断
+Beq：如果两个值相等，则跳转到指定行数。
+Beq.S：如果两个值相等，则跳转到指定行数（短格式）。
+Bge：如果第一个值大于或等于第二个值，则跳转到指定行数。
+Bge.S：如果第一个值大于或等于第二个值，则跳转到指定行数（短格式）。
+Bge.Un：当比较无符号整数值或不可排序的浮点型值时，如果第一个值大于第二个值，则跳转到指定行数。
+Bge.Un.S：当比较无符号整数值或不可排序的浮点型值时，如果第一个值大于第二个值，则跳转到指定行数（短格式）。
+Bgt：如果第一个值大于第二个值，则跳转到指定行数。
+Bgt.S：如果第一个值大于第二个值，则跳转到指定行数（短格式）。
+Bgt.Un：当比较无符号整数值或不可排序的浮点型值时，如果第一个值大于第二个值，则跳转到指定行数。
+Bgt.Un.S：当比较无符号整数值或不可排序的浮点型值时，如果第一个值大于第二个值，则跳转到指定行数（短格式）。
+Ble：如果第一个值小于或等于第二个值，则跳转到指定行数。
+Ble.S：如果第一个值小于或等于第二个值，则跳转到指定行数（短格式）。
+Ble.Un：当比较无符号整数值或不可排序的浮点型值时，如果第一个值小于或等于第二个值，则跳转到指定行数。
+Ble.Un.S：当比较无符号整数值或不可排序的浮点值时，如果第一个值小于或等于第二个值，则跳转到指定行数（短格式）。
+Blt：如果第一个值小于第二个值，则跳转到指定行数。
+Blt.S：如果第一个值小于第二个值，则跳转到指定行数（短格式）。
+Blt.Un：当比较无符号整数值或不可排序的浮点型值时，如果第一个值小于第二个值，则跳转到指定行数。
+Blt.Un.S：当比较无符号整数值或不可排序的浮点型值时，如果第一个值小于第二个值，则跳转到指定行数（短格式）。
+Bne.Un：当两个无符号整数值或不可排序的浮点型值不相等时，将跳转到指定行数。
+Bne.Un.S：当两个无符号整数值或不可排序的浮点型值不相等时，则跳转到指定行数（短格式）。
+Br：无条件跳转到指定行数。
+Br.S：无条件跳转到指定行数（短格式）。
+
+
+数值转换：
+Conv.I：将指定变量的值转换为 native int。
+Conv.I1：将指定变量的值转换为 int8，然后将其扩展（填充）为 int32。
+Conv.I2：将指定变量的值转换为 int16，然后将其扩展（填充）为 int32。
+Conv.I4：将指定变量的值转换为 int32。
+Conv.I8：将指定变量的值转换为 int64。
+Conv.Ovf.I：将指定变量的有符号值转换为有符号 native int，并在溢出时引发 OverflowException。
+Conv.Ovf.I.Un：将指定变量的无符号值转换为有符号 native int，并在溢出时引发 OverflowException。
+Conv.Ovf.I1：将指定变量的有符号值转换为有符号 int8 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I1.Un：将指定变量的无符号值转换为有符号 int8 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I2：将指定变量的有符号值转换为有符号 int16 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I2.Un：将指定变量的无符号值转换为有符号 int16 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I4：将指定变量的有符号值转换为有符号 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I4.Un：将指定变量的无符号值转换为有符号 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.I8：将指定变量的有符号值转换为有符号 int64，并在溢出时引发 OverflowException。
+Conv.Ovf.I8.Un：将位指定变量的无符号值转换为有符号 int64，并在溢出时引发 OverflowException。
+Conv.Ovf.U：将指定变量的有符号值转换为 unsigned native int，并在溢出时引发 OverflowException。
+Conv.Ovf.U.Un：将指定变量的无符号值转换为 unsigned native int，并在溢出时引发 OverflowException。
+Conv.Ovf.U1：将指定变量的有符号值转换为 unsigned int8 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U1.Un：将指定变量的无符号值转换为 unsigned int8 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U2：将指定变量的有符号值转换为 unsigned int16 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U2.Un：将指定变量的无符号值转换为 unsigned int16 并将其扩展为 int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U4：将指定变量的有符号值转换为 unsigned int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U4.Un：将指定变量的无符号值转换为 unsigned int32，并在溢出时引发 OverflowException。
+Conv.Ovf.U8：将指定变量的有符号值转换为 unsigned int64，并在溢出时引发 OverflowException。
+Conv.Ovf.U8.Un：将指定变量的无符号值转换为 unsigned int64，并在溢出时引发 OverflowException。
+Conv.R.Un：将指定变量的无符号整数值转换为 float32。
+Conv.R4：将指定变量的值转换为 float32。
+Conv.R8：将指定变量的值转换为 float64。
+Conv.U：将指定变量的值转换为 unsigned native int，然后将其扩展为 native int。
+Conv.U1：将指定变量的值转换为 unsigned int8，然后将其扩展为 int32。
+Conv.U2：将指定变量的值转换为 unsigned int16，然后将其扩展为 int32。
+Conv.U4：将指定变量的值转换为 unsigned int32，然后将其扩展为 int32。
+
+
+参数调用：
+Ldarg：将参数（由指定索引值引用）调用。
+Ldarg.0：将索引为 0 的参数调用。
+Ldarg.1：将索引为 1 的参数调用。
+Ldarg.2：将索引为 2 的参数调用。
+Ldarg.3：将索引为 3 的参数调用。
+Ldarg.S：将参数（由指定的短格式索引引用）调用。
+
+
+数值定义：
+Ldc.I4：定义一个int32数值。
+Ldc.I4.0：定义一个int32数值，值为0。
+Ldc.I4.1：定义一个int32数值，值为1。
+Ldc.I4.2：定义一个int32数值，值为2。
+Ldc.I4.3：定义一个int32数值，值为3。
+Ldc.I4.4：定义一个int32数值，值为4。
+Ldc.I4.5：定义一个int32数值，值为5。
+Ldc.I4.6：定义一个int32数值，值为6。
+Ldc.I4.7：定义一个int32数值，值为7。
+Ldc.I4.8：定义一个int32数值，值为8。
+Ldc.I4.M1：定义一个int32数值，值为-1。
+Ldc.I4.S：把int8数值当做int32类型（短格式）。
+Ldc.I8：定义一个int64数值。
+Ldc.R4：定义一个float32数值。
+Ldc.R8：定义一个float64数值。
+
+修改操作篇
+0   ldarg.0
+1   要加的数1
+2   要加的数2
+3   加减乘除  操作符
+4   ret
+
+修改数，或者修改符号
+
+opcode 文档
+opcode
+
+提取Unity3D 的资源文件
+http://www.kanxue.com/bbs/showthread.php?t=191380
+Disunity
+解压缩包的解压QuickBMS
+http://aluigi.altervista.org/quickbms.htm
+猛犸汉化QuickBMS中文
+http://www.81256.com/game-24905-1-1.html
+扑家汉化
+http://www.pujia8.com/articles/11/
+
