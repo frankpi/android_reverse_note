@@ -1,0 +1,88 @@
+1，Log注入
+const-string v1,"SN"
+invoke-static {v1,v0}, Landroid/util/log;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+2，alertDialog
+java代码
+new AlertDialog.Builder(self)
+.setTitle("普通对话框")
+.setMessage("你好，Android!")
+.show();
+
+Smali代码
+new-instance v1,Landroid/app/AlertDialog$Builder;
+invoke-direct {v1,p0}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;)V
+.line 29
+.local v1,builder:Landroid/app/AlertDialog$Builder;
+const-string v2,"\u666e\u901a\u5bf9\u8bdd\u6846"
+invoke-virtual {v1,v2}, Landroid/app/AlertDialog$Builder;->setTitle(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
+.line 31
+const-string v2,"\u4f60\u597d\uff0cAndroid!"
+invoke-virtual {v1,v2},Landroid/app/AlertDialog$Builder;->setMessage(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
+.line 52
+invoke-virtual {v1},Landroid/app/AlertDialog$Builder;->create()Landroid/app/AlertDialog;
+move-result-object v2
+invoke-virtual {v2},Landroid/app/AlertDialog;->show()V
+将上述smali代码插入MainActivity.smali中的create函数的return-void语句前面
+
+3，卡住程序运行
+方法一：
+try{
+      Thread.sleep(60*1000);
+}catch(InterruptedException e){
+      e.printStackTrace();
+} 
+.line 69
+const-wide/32  v1,0xeff0
+:try_start_0
+#v1=(LongLo);v2=(LongHi);
+invoke-static {v1,v2},Ljava/lang/Thread;->Sleep(J)V
+:try_end_0
+.catch Ljava/lang/InterruptedException; {:try_start_0 .. try_end_0} :catch_0
+.line 87
+:goto_0
+#v0=(Conflicted);
+#此后面是try后的内容
+return-void
+.line 70
+:catch_0
+#v0=(Uninit);
+move-exception v0
+.line 72
+.local v0, e:Ljava/lang/InterruptedException;
+#v0=(Reference);
+invoke-virtual {v0}, Ljava/lang/InterruptedException;->printStackTrace()V
+goto :goto_0
+方法二:
+android.os.SystemClock.sleep(60*1000);
+smali
+const-wide/32 v0, 0xea60   
+invoke-static {v0, v1}, Landroid/os/SystemClock;->sleep(J)V
+
+4.栈跟踪(调用关系)
+#new Exception("print trace").printStackTrace();
+new-instance v0,Ljava/lang/Exception;
+const-string v1,"print trace"
+invoke-direct {v0,v1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
+栈跟踪信息记录了程序从启动到printStackTrace()被执行期间所有被调用过的方法。从下往上查看栈跟踪信息，
+找到第一条以com.android.stackTrace开头的信息。
+栈跟踪信息是WARN级别，而且Tag名称被系统命令为System.err. 命令行：adb logcat -s System.err:V *:W
+
+5.Method Profiling(调用关系)
+#android.os.Debug.startMethodTracing("123");  "123"为文件名
+#a();
+#android.os.Debug.stopMethodTracing();
+Android-Manifest.xml添加SD卡写入权限
+<user-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+#android.os.Debug.startMethodTracing("123");
+const-string v0, "123"
+invoke-static {v0}, Landroid/os/Debug;->startMethodTracing(Ljava/lang/String;) V
+#android.os.Debug.stopMethodTracing();
+invoke-static {}, Landroid/os/Debug;->stopMethodTracing() V
+SD卡的根目录生成123.trace
+分析命令：
+adb pull /mnt/sdcard/123.trace
+traceview 123.trace
+
+
