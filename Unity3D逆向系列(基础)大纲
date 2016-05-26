@@ -193,7 +193,7 @@ Ldc.R8：定义一个float64数值。
 修改数，或者修改符号
 
 opcode 文档
-opcode
+<https://msdn.microsoft.com/zh-cn/library/system.reflection.emit.opcodes_fields(v=vs.110).aspx/>
 
 提取Unity3D 的资源文件
 http://www.kanxue.com/bbs/showthread.php?t=191380
