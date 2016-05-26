@@ -1,0 +1,19 @@
+assets/src/
+
+替换.jsc 为 .js 文件
+
+ui/dialog.js
+game/storage.js
+game/player.js
+
+修改的内容在js里面有注释
+
+
+1.2.0 更新说明
+	ui/dialog.js	
+	game/storage.js  这个存储的js替换会造成黑屏，不替换
+	game/player.js   属性值修改
+	新增加
+	ItemChangeNode.js
+
+	内购+无限购买+属性修改
