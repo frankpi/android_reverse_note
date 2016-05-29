@@ -1,0 +1,101 @@
+Ubuntu中安装Git及其相关的配置
+
+Github的服务主要用来托管代码和协同写作。对于我等非码农用来在Ubuntu中同步和安装相关软件的最新版本（现在许多软件的最新版都托管到Github上了）也是很有用的。本文记录在Ubuntu中安装Git并托管和安装代码软件的简单步骤笔记。不同其他软件，在Ubuntu中安装Git不会产生图标～
+下载和安装Git软件
+
+$ sudo apt-get install git
+配置Git软件并基于SSH生产密钥
+
+首先在Git软件中配置自己在Github上建立的帐号的用户名和邮件地址。如果没有可以到Github上去注册先。注册完成的可以跳过
+$ git config --global user.name "Your Name Here"
+# Sets the default name for git to use when you commit
+$ git config --global user.email "your_email@youremail.com"
+# Sets the default email for git to use when you commit
+然后检查系统中是否已经有了一个SSH密钥：
+$ cd ~/.ssh
+# Checks to see if there is a directory named ".ssh" in your user directory
+
+如果显示“No such file or directory”，则没有，需要重新建立。如果有的话，可以先备份老的密钥然后移除：
+$ ls
+# Lists all the subdirectories in the current directory
+# config  id_rsa  id_rsa.pub  known_hosts
+mkdir key_backup
+# Makes a subdirectory called "key_backup" in the current directory
+cp id_rsa* key_backup
+# Copies the id_rsa keypair into key_backup
+rm id_rsa*
+# Deletes the id_rsa keypair
+
+然后产生一个新的SSH密钥。当提示“Enter a file in which to save the key”时仅仅按Enter就可以保持默认设置，即存在自己的家目录下（“you”换成自己的Ubuntu帐号名，下同）。邮件地址与前面的和Github帐号中的相同：
+
+$ ssh-keygen -t rsa -C "your_email@youremail.com"
+# Creates a new ssh key using the provided email
+# Generating public/private rsa key pair.
+# Enter file in which to save the key (/home/you/.ssh/id_rsa):
+回车后会提示输入密码并确认密码：
+Enter passphrase (empty for no passphrase): [Type a passphrase]
+# Enter same passphrase again: [Type passphrase again]
+然后看到类似这样的信息即表明密钥生成成功了：
+Your identification has been saved in /home/you/.ssh/id_rsa.
+# Your public key has been saved in /home/you/.ssh/id_rsa.pub.
+# The key fingerprint is:
+# 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@youremail.com
+
+遇到的问题
+在Ubuntu下使用ssh命令连接github.com的SSH服务，登录名为git@github.com(所有GitHub用户共享此SSH用户名)。
+ssh -T git@github.com
+执行之后提示：Permission denied (publickey).
+把 ~/.ssh /id_rsa.pub   文件中的公钥添加到下面SSH_Keys
+这说明我们还没有在GitHub账户中正确设置公钥认证，如下图所示：
+ 
+
+
+然后就可以尝试着检测一下SSH连接git到Github服务器了：
+$ ssh -T git@github.com
+# Attempts to ssh to github
+可能会看到这样的警告，但没有关系，输入“yes”回车：
+The authenticity of host 'github.com (207.97.227.239)' can't be established.
+# RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+# Are you sure you want to continue connecting (yes/no)?
+最后就可以看到这样的连接成功的消息了：
+Hi username! You've successfully authenticated, but GitHub does not
+# provide shell access.
+ 
+简单的上传下载方法
+
+上传一个文件到Github，先需要在Github建立一个repo，然后上传。例如建立“Hello-world”文件并上传到刚建立的repo：
+$ mkdir ~/Hello-World
+# Creates a directory for your project called "Hello-World" in your user directory
+$cd ~/Hello-World
+# Changes the current working directory to your newly created directory
+$git init
+# Sets up the necessary Git files
+# Initialized empty Git repository in /Users/you/Hello-World/.git/
+$touch README
+# Creates a file called "README" in your Hello-World directory
+
+
+上传建立的Hello-world文件，其中Hello-World为刚开始在Github上建立的repo：
+在git本地库里打开命令行
+$ git status
+其中会遇到本地落后于库里的版本，这样就要
+$ git pull 
+$ git add README
+# Stages your README file, adding it to the list of files to be committed
+git commit -m 'first commit'
+# Commits your files, adding the message "first commit"
+$ git remote add origin https://github.com/username/Hello-World.git
+# Creates a remote named "origin" pointing at your GitHub repo
+$ git push origin master
+# Sends your commits in the "master" branch to GitHub
+ 
+如果看到别人的好东西需要下载的话，先Fork别人的repo，然后Clone到你的电脑（当然也可以不Fork直接的Clone）：
+$ git clone https://github.com/username/Spoon-Knife.git
+# Clones your fork of the repo into the current directory in terminal
+本文内容参考Github，当然这是最最基础的，其他的可以参考Github上的更详细的教程。
+
+更新本地代码，并放弃本地的提交和改动：
+git fetch --all
+git reset --hard origin/master
+git fetch 只是下载远程的库的内容，不做任何的合并 git reset 把HEAD指向刚刚下载的最新的版本
+
