@@ -1,0 +1,116 @@
+
+一、总结
+
+预处理
+自定义数据类型
+    结构体，联合体，链表
+逻辑运算符
+    &，|，^，~，<<，>>
+递归
+二、程序的编译过程
+
+对于GUN编译器来说，程序的编译要经历预处理、编译、汇编、连接四个阶段，如下图所示：
+
+\
+
+从功能上分，预处理、编译、汇编是三个不同的阶段，但GCC的实际操作上，它可以把这三个步骤合并为一个步骤来执行。下面以C语言为例来谈一下不同阶段的输入和输出情况。
+GCC编译器的基本选项如下表：
+类型	说明
+-E	预处理后即停止，不进行编译、汇编及连接
+-S	编译后即停止，不进行汇编及连接
+-c	编译或汇编源文件，但不进行连接
+-o file	指定输出文件file
+ 
+在预处理阶段，输入的是C语言的源文件，通常为*.c。它们通常带有.h之类头文件的包含文件。这个阶段主要处理源文件中的#ifdef、 #include和#define命令。该阶段会生成一个中间文件*.i，但实际工作中通常不用专门生成这种文件，因为基本上用不到；若非要生成这种文件不可，可以利用下面的示例命令：
+gcc -E  test.c -o test.i
+在编译阶段，输入的是中间文件*.i，编译后生成汇编语言文件*.s 。这个阶段对应的GCC命令如下所示：
+gcc -S test.i -o test.s
+在汇编阶段，将输入的汇编文件*.s转换成机器语言*.o。这个阶段对应的GCC命令如下所示：
+gcc -c test.s -o test.o
+最后，在连接阶段将输入的机器代码文件*.s（与其它的机器代码文件和库文件）汇集成一个可执行的二进制代码文件。这一步骤，可以利用下面的示例命令完成：
+gcc test.o -o test
+运行如下：
+\
+
+可以通过：cat -n [filename]命令查看每一个阶段的文件内容
+上面介绍了GCC编译过程的四个阶段以及相应的命令。下面我们进一步介绍常用的GCC的模式。
+
+三、宏：
+
+预处理阶段，不会进行运算操作，只进行替换；在编译时，才进行运算；
+#define  int ADD(a,b) a+b; ？
+#define ADD(a,b) (a+b);
+不考虑参数类型，返回值类型，不用以分号结尾；
+宏替换：
+不考虑c的语法，不用管什么类型，都当做字符串替换。
+若想得到预想结果，加（）即可；
+
+
+typedef 是一个关键字，给变量起一个别名；
+typedef int tni
+typedef int *p
+一般给自定义的数据类型使用；
+typedef unsigned long size_t
+所以有时候使用
+size_t a = XX;
+常用于声明结构体：
+typedef struct stu{
+XX;
+}stu_t;
+宏 无限作用域
+typedef 有限作用域 
+
+
+struct定义方式：
+1. 定义类型 struct xx {};
+2. 定义类型并声明一个全局变量 struct xx {} xx_1;
+3. 定义一个结构体 struct {} xx_1;
+
+#include<stdio.h>
+struct weapon{
+
+	char name[20];
+	int atk;
+	int price;
+};
+int main(){
+	int a = 0;
+	float b = 0.0;
+	
+	struct weapon weapon_1 = {"weapon_name",100,200};//结构体初始化
+	printf("%s;\n%d\n",weapon_1.name,++weapon_1.price);
+
+	struct weapon weapon_2[2] = {
+	{"weapon_name1",101,201},{"weapon_name2",102,202}
+	};
+	printf("%s;\n%s\n",weapon_2[0].name,weapon_2[1].name);
+
+}
+
+<pre name="code" class="cpp">#include<stdio.h>
+union data{
+	int a;
+	char b;
+	int c;
+	
+};
+int main(){
+	union data data_1;//联合体：内存长度是所有成员最长的长度;
+	data.b = 'a';
+	data.a = 10;
+	return 0;
+}
+struct weapon{
+	int a;
+	char b;
+	int c;
+};
+/*
+结构体的大小：
+字节对齐，为了计算机快速读写，
+最后一个成员的偏移量+最后成员大小+填充字节数;
+b成员填充3
+所以weapon结构体大小是：12
+*/
+
+
