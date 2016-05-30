@@ -1,0 +1,268 @@
+View.post api 中实际上调用的还是mHandler.post 
+Handler 实际上就是解决UI线程刷新问题的；
+
+Runnable 并不一定是新开一个线程，比如下面的调用方法就是运行在UI主线程中的：
+
+     Handler mHandler=new Handler(); 
+     mHandler.post(new Runnable(){ 
+        @Override public void run() 
+        { // TODO Auto-generated method stub 
+         } 
+     });
+官方对这个方法的解释如下，注意其中的：“The runnable will be run on the user interface thread. ”
+
+boolean android.view.View .post(Runnable action)
+
+Causes the Runnable to be added to the message queue. The runnable will be run on the user interface thread.
+
+Parameters:
+
+action The Runnable that will be executed.
+
+Returns:
+
+Returns true if the Runnable was successfully placed in to the message queue. Returns false on failure, 
+usually because the looper processing the message queue is exiting.
+
+我们可以通过调用handler的post方法，把Runnable对象（一般是Runnable的子类）传过去；
+handler会在looper中调用这个Runnable的Run方法执行。
+
+Runnable是一个接口，不是一个线程，一般线程会实现Runnable。所以如果我们使用匿名内部类是运行在UI主线程的，
+如果我们使用实现这个Runnable接口的线程类，则是运行在对应线程的。
+
+具体来说，这个函数的工作原理如下：
+
+View.post(Runnable)方法。在post(Runnable action)方法里，View获得当前线程（即UI线程）的Handler，
+然后将action对象post到Handler里。在Handler里，它将传递过来的action对象包装成一个Message（Message的callback为action），
+然后将其投入UI线程的消息循环中。在Handler再次处理该Message时，有一条分支（未解释的那条）就是为它所设，
+直接调用runnable的run方法。而此时，已经路由到UI线程里，因此，我们可以毫无顾虑的来更新UI。
+
+如下图，前面看到的代码，我们这里Message的callback为一个Runnable的匿名内部类
+
+这种情况下，由于不是在新的线程中使用，所以千万别做复杂的计算逻辑。
+
+
+
+ 
+
+ 
+
+android为什么不允许新开启一个线程来更新UI，而是用handler来更新界面
+
+操作是很有可能并发的，而界面只有一个
+这个和买票排队是一回事
+买票的人太多了，卖票的只有一个，只能一个一个来
+如果你开多线程，让100个人同时去买票，而且不排队，那么后果会怎么样- -
+同理，你开多线程，让100个线程去设置同一个TextView的显示内容，每个显示内容都不一样，它该听谁的？
+
+那为什么不直接new一个新线程而要使用一个所谓的handler？
+
+就是因为new了一个子线程才要用handler的，
+不然在主线程里更新UI要handler干什么？多此一举
+
+就好比只有1个人来买票，卖票的难道会跟他说：同志，请你排队！？
+handle是主线程 ，Thread是从线程。控件数据更改只能在主线程 里，所以要用handle
+
+更新UI只能在主线程里进行，否则会报错。但有时我们在子线程里进行操作需要更新UI，handler就登场了，
+它可以把子线程的数据传给主线程，让主线程同步操作来更新UI。
+
+先来看这样一个例子
+
+ package com.hua;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class UpdateUInum1Activity extends Activity {
+ 
+ @Override
+ public void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.main);
+  new Thread(new Runnable() {
+   @Override
+   public void run() {
+    setTitle("fengyi.hua");
+   }
+  });
+ }
+}
+
+    上面就是为了实现用一个Thread来更新Title，可以实现这个功能，刷新UI界面。但是这样是不对的，因为它违背了单线程模型：
+    Android UI操作并不是线程安全的并且这些操作必须在UI线程中执行。
+
+    有些人觉得这个方法确实也多余，为什么呢，因为既然是刷新一次，我完全可以在主线程中执行刷新Title的操作的，
+    为什么还要开启线程。这是因为可能涉及到延时或者其它。比如说等待1min后再进行刷新操作，这个时间段要保证主UI线程是可操作的，
+    所以要用到Thread来更新。但是这确实对于android的单线程模型有冲突，不建议使用。使用错误的例子如下：
+
+ 
+
+package com.hua;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+public class UpdateTitleActivity extends Activity {
+ 
+
+  private void updateTitle() {
+  Date date = new Date();
+  int hour, minute, second;
+  String shour, sminute, ssecond;
+  hour = (date.getHours() + 8) % 24;
+  minute = date.getMinutes();
+  second = date.getSeconds();
+
+  if (hour < 10) {
+   shour = "0" + hour;
+  } else {
+   shour = "" + hour;
+  }
+
+  if (minute < 10) {
+   sminute = "0" + minute;
+  } else {
+   sminute = "" + minute;
+  }
+
+  if (second < 10) {
+   ssecond = "0" + second;
+  } else {
+   ssecond = "" + second;
+  }
+
+  setTitle("当前时间：" + shour + ":" + sminute + ":" + ssecond);
+ }
+
+ @Override
+ public void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.main);
+  Timer timer = new Timer();
+  timer.scheduleAtFixedRate(new myTask(), 1, 1000);//这里是利用Timer，跟使用Thread是一个效果。表现
+
+  //的效果就是多次更新Title，看会不会出问题。
+ }
+
+ private class myTask extends TimerTask {
+  @Override
+  public void run() {
+     updateTitle();
+  }
+
+ }
+
+}
+
+   上面的代码用来每1s刷新一次Title，用来显示当前时间。但是由于android是单线程模型，存在线程安全问题，所以当第二次刷新的时候，
+   出现错误。
+
+ 
+
+ 
+
+正确的做法
+
+    上面所述两种方法，分别是Thread方法，和TimerTask方法。在Java中是常用的，因为线程安全。但是在单线程模型的android中，
+    是不能用的。正确的方法有2个。
+
+ 
+
+1.Thread+handler
+
+2.TimerTask+handler
+
+3.Runnable+Handler.postDelayed(runnable,time)
+
+ 
+
+例子：Timertask+handler
+
+package com.hua;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+public class UpdateTitleActivity extends Activity {
+ 
+
+  private Handler mHandler = new Handler(){
+
+  @Override
+  public void handleMessage(Message msg) {
+  super.handleMessage(msg);
+  switch (msg.what) {
+  case 1:
+  updateTitle();
+  break;
+ 
+  default:
+  break;
+  }
+  }
+  };
+
+ private void updateTitle() {
+  Date date = new Date();
+  int hour, minute, second;
+  String shour, sminute, ssecond;
+  hour = (date.getHours() + 8) % 24;
+  minute = date.getMinutes();
+  second = date.getSeconds();
+
+  if (hour < 10) {
+   shour = "0" + hour;
+  } else {
+   shour = "" + hour;
+  }
+
+  if (minute < 10) {
+   sminute = "0" + minute;
+  } else {
+   sminute = "" + minute;
+  }
+
+  if (second < 10) {
+   ssecond = "0" + second;
+  } else {
+   ssecond = "" + second;
+  }
+
+  setTitle("当前时间：" + shour + ":" + sminute + ":" + ssecond);
+ }
+
+ @Override
+ public void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.main);
+  Timer timer = new Timer();
+  timer.scheduleAtFixedRate(new myTask(), 1, 10000);
+ }
+
+ private class myTask extends TimerTask {
+  @Override
+  public void run() {
+    Message msg = new Message();
+    msg.what = 1;
+    mHandler.sendMessage(msg);
+  }
+
+ }
+
+}
+
+ 
+
+    记住，处理都是在handleMessage里面，当然也可以不在，可以在handler的内类Callback的方法handleMessage里面。Handler跟其Callback也是学问，可以以后讲。
