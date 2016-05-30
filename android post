@@ -66,6 +66,7 @@ handle是主线程 ，Thread是从线程。控件数据更改只能在主线程 
 更新UI只能在主线程里进行，否则会报错。但有时我们在子线程里进行操作需要更新UI，handler就登场了，
 它可以把子线程的数据传给主线程，让主线程同步操作来更新UI。
 
+
 先来看这样一个例子
 
  package com.hua;
@@ -139,6 +140,8 @@ public class UpdateTitleActivity extends Activity {
 
   setTitle("当前时间：" + shour + ":" + sminute + ":" + ssecond);
  }
+
+
 
  @Override
  public void onCreate(Bundle savedInstanceState) {
@@ -265,4 +268,5 @@ public class UpdateTitleActivity extends Activity {
 
  
 
-    记住，处理都是在handleMessage里面，当然也可以不在，可以在handler的内类Callback的方法handleMessage里面。Handler跟其Callback也是学问，可以以后讲。
+    记住，处理都是在handleMessage里面，当然也可以不在，可以在handler的内类Callback的方法handleMessage里面。
+    Handler跟其Callback也是学问，可以以后讲。
