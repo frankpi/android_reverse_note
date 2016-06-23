@@ -14,4 +14,8 @@ dexposed
 andfix
 侧重patch 补丁
 
+##jdk和eclipse 版本一致问题
+
+在eclipse 中 eclipse.ini
+
 
