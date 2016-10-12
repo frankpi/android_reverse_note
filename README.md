@@ -18,4 +18,7 @@ andfix
 
 在eclipse 中 eclipse.ini
 
+smali 注入一般都是注入一个单独类，或者单独一个方法，
+先写出apk 反编译copy
+
 
