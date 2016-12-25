@@ -2,14 +2,14 @@
 中文>>>>>>>>>>>>英文
 初始化          init
 英雄、玩家      Hero、player、gamer
-多人			Multiplayer
+多人			      Multiplayer
 怪物、敌人      monster、Enemies（enemy）
-无敌			invincible、isInvincible、
+无敌			      invincible、isInvincible、
 攻击            attack(atk)、fight、hit、damage
 生命            health、life、HP、Max hp
-作弊   			cheat
+作弊   			    cheat
 作弊码 游戏秘籍 cheat code 
-逃脱死亡		cheat death 
+逃脱死亡		    cheat death 
 
 金币            gold、coin、cash、money
 钻石、宝石      Gem、diamond
@@ -22,7 +22,7 @@
 冷却时间        cooldown
 技能点          skillpoint、sp
 技能            skill
-技巧			Technique
+技巧			      Technique
 蓝              mp、sp、Power
 防御            defence(def)
 护甲            Armor
@@ -47,7 +47,7 @@
 阶段 举行 上演	stage 
 附带包 扩展包	add-on
 收集物、合集	collection
-教程			guide
+教程			    guide
 取              get
 置              set
 支付            bill、billing、pay、purchase
