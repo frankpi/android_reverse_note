@@ -1,0 +1,72 @@
+package com.gameassist.plugin.inputassist.work.service;
+
+import android.app.Activity;
+import android.util.Log;
+import android.view.MotionEvent;
+
+import com.gameassist.plugin.inputassist.PluginEntry;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+/**
+ * Created by hxm on 17/7/17.
+ */
+public class InstrumentationInvoke {
+    private Method sendPointerSync_ref;
+    private Method sendKeyDownUpSync_ref;
+    private Field mInstrumentation;
+    public InstrumentationInvoke(){
+        try {
+            Class activity = Class.forName("android.app.Activity");
+            mInstrumentation = activity.getDeclaredField("mInstrumentation");
+            mInstrumentation.setAccessible(true);
+            Class instrument = Class.forName("android.app.Instrumentation");
+            sendPointerSync_ref = instrument.getMethod("sendPointerSync", MotionEvent.class);
+            sendPointerSync_ref.setAccessible(true);
+            sendKeyDownUpSync_ref = instrument.getMethod("sendKeyDownUpSync",int.class);
+            sendKeyDownUpSync_ref.setAccessible(true);
+            Log.e(PluginEntry.TAG,mInstrumentation.getName());
+            Log.e(PluginEntry.TAG,sendPointerSync_ref.getName());
+        } catch (Exception e) {
+            Log.e(PluginEntry.TAG,"获取class失败"+e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void sendPointerSync(final Activity ac,final MotionEvent event){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mInstrumentation != null){
+                    try {
+                        Object mInstrumentation_obj = mInstrumentation.get(ac);
+                        if(mInstrumentation_obj != null){
+                            sendPointerSync_ref.invoke(mInstrumentation_obj,event);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
+    public void sendKeyDownUpSync(final Activity ac, final int keycode){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mInstrumentation != null){
+                    try {
+                        Object mInstrumentation_obj = mInstrumentation.get(ac);
+                        if(mInstrumentation_obj != null){
+                            sendKeyDownUpSync_ref.invoke(mInstrumentation_obj,keycode);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
+}
