@@ -1,6 +1,18 @@
 
 Unity3D逆向系列(基础)大纲----By:Sarkozy
 
+关键文章：雨松momo
+il2cpp
+工具：https://github.com/Jumboperson/Il2CppDumper
+资源提取工具：UnityStudio，Disunity
+解压缩包的解压QuickBMS
+http://aluigi.altervista.org/quickbms.htm
+猛犸汉化QuickBMS中文
+http://www.81256.com/game-24905-1-1.html
+扑家汉化
+http://www.pujia8.com/articles/11/
+il 文档
+<https://msdn.microsoft.com/zh-cn/library/system.reflection.emit.opcodes_fields(v=vs.110).aspx/>
 
 基础介绍篇
 1.unity逆向环境搭建
@@ -195,13 +207,6 @@ Ldc.R8：定义一个float64数值。
 opcode 文档
 <https://msdn.microsoft.com/zh-cn/library/system.reflection.emit.opcodes_fields(v=vs.110).aspx/>
 
-提取Unity3D 的资源文件
-http://www.kanxue.com/bbs/showthread.php?t=191380
-Disunity
-解压缩包的解压QuickBMS
-http://aluigi.altervista.org/quickbms.htm
-猛犸汉化QuickBMS中文
-http://www.81256.com/game-24905-1-1.html
-扑家汉化
-http://www.pujia8.com/articles/11/
+
+
 
