@@ -2,17 +2,12 @@
 andorid APK 逆向的一些学习过程
 
 
-Cydia substrate 
-http://www.cydiasubstrate.com/
+Cydia substrate：http://www.cydiasubstrate.com/
 
-
-HotFix
-热修复-基于Xposed
-
-dexposed
-侧重hook
-andfix
-侧重patch 补丁
+HotFix：热修复-基于Xposed
+dexposed：侧重hook
+andfix：侧重patch 补丁
+VirtualApp：双开
 
 ##jdk和eclipse 版本一致问题
 
@@ -42,7 +37,7 @@ smali 注入一般都是注入一个单独类，或者单独一个方法，
 
 ###BeyondCompare===对比工具
 
-###GDA===新的apk分析工具
+###GDA===看雪新的apk分析工具
 
 ###IDA ===收费so分析工具，动态调试
 
