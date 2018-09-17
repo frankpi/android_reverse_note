@@ -1,8 +1,3 @@
-
-
-
-
-
 # Site settings
 title: Android Reverse note                   #你博客的标题
 SEOTitle: frankpi | LiuJP       #显示在浏览器上搜索的时候显示的标题
@@ -25,14 +20,14 @@ theme: jekyll-theme-cayman
 
 
 # other links
-twitter_username: 
-facebook_username: 
+twitter_username: 1
+facebook_username: 1
 github_username:  LiuJP
 email: frankpi@126.com
-weibo_username: 
-zhihu_username: 
-linkedIn_username: 
-dribbble_username:
+weibo_username:1
+zhihu_username: 1
+linkedIn_username: 1
+dribbble_username:1
 
 description_footer: 本站记录我Android之旅的沿途风景！
 
