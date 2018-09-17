@@ -13,7 +13,12 @@ url: "https://frankpi.github.io"          # 这个就是填写你的博客地址
 #sidebar-about-description: ""
 #sidebar-avatar:/igm/avatar-by.JPG      # 你的个人头像 这里你可以改成我在img文件夹中的两张备用照片 img/avatar-m 或 avatar-g
 
-
+menu:
+  home: /      //主页
+  categories: /categories //分类
+  archives: /archives   //归档
+  tags: /tags   //标签
+  about: /about   //关于   
 
 
 # other links
