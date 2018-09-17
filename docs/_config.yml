@@ -5,7 +5,7 @@ email: frankpi@126.com
 description: " andorid APK 逆向的一些学习过程"              #网站介绍
 keyword: "Android 逆向 " #关键词
 url: "https://frankpi.github.io"          # 这个就是填写你的博客地址
-baseurl: ""      # 这个我们不用填写
+#baseurl: ""      # 这个我们不用填写
 
 
 # Sidebar settings
