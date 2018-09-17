@@ -3,9 +3,9 @@ title: Android Reverse note                   #你博客的标题
 SEOTitle: frankpi | LiuJP       #显示在浏览器上搜索的时候显示的标题
 email: frankpi@126.com    
 description: " andorid APK 逆向的一些学习过程"              #网站介绍
-keyword: "Android 逆向 " #关键词
-url: "https://frankpi.github.io"          # 这个就是填写你的博客地址
-baseurl: ""      # 这个我们不用填写
+#keyword: "Android 逆向 " #关键词
+#url: "https://frankpi.github.io"          # 这个就是填写你的博客地址
+#baseurl: ""      # 这个我们不用填写
 
 
 # Sidebar settings
@@ -26,7 +26,7 @@ baseurl: ""      # 这个我们不用填写
 #linkedIn_username: 1
 #dribbble_username: 1
 
-description_footer: 本站记录我Android之旅的沿途风景！
+#description_footer: 本站记录我Android之旅的沿途风景！
 
 
 show_downloads: false
