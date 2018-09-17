@@ -7,7 +7,7 @@ $ git fetch origin
 $ git checkout gh-pages
 ```
 
-[02]:https://github.com/frankpi/android_reverse_note/blob/gh-pages/02.html
+[fsfasfsfdsf](https://github.com/frankpi/android_reverse_note/blob/gh-pages/02.html)
 
 If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.
 
