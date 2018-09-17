@@ -15,8 +15,6 @@ baseurl: ""      # 这个我们不用填写
 #sidebar-avatar:/igm/avatar-by.JPG      # 你的个人头像 这里你可以改成我在img文件夹中的两张备用照片 img/avatar-m 或 avatar-g
 
 
-show_downloads: false
-theme: jekyll-theme-cayman
 
 
 # other links
@@ -24,12 +22,17 @@ twitter_username: 1
 facebook_username: 1
 github_username:  LiuJP
 email: frankpi@126.com
-weibo_username: 1
-zhihu_username: 1
-linkedIn_username: 1
-dribbble_username: 1
+#weibo_username: 1
+#zhihu_username: 1
+#linkedIn_username: 1
+#dribbble_username: 1
 
 description_footer: 本站记录我Android之旅的沿途风景！
+
+
+
+show_downloads: false
+theme: jekyll-theme-cayman
 
 gems:
   - jekyll-mentions
